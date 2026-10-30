@@ -108,6 +108,13 @@ export default function Home() {
               >
                 Contact Me
               </a>
+              <a
+  href="/Ali-Imran-CV.pdf"
+  download="Muhammad-Ali-Imran-CV.pdf"
+  className="inline-block rounded-lg border border-sky-500 px-8 py-4 font-semibold text-sky-400 transition hover:bg-sky-500 hover:text-black"
+>
+  Download My CV
+</a>
             </div>
           </div>
 
@@ -216,25 +223,49 @@ export default function Home() {
       </section>
 
       {/* CONTACT */}
-      <section id="contact" className="bg-[#080d20] px-6 py-28 text-center">
-        <p className="font-mono text-sm text-sky-400">// GET IN TOUCH</p>
+    
+<section id="contact" className="bg-[#080d20] px-6 py-28 text-center">
+  <p className="font-mono text-sm text-sky-400">// GET IN TOUCH</p>
 
-        <h2 className="mt-5 text-4xl font-bold">
-          Let's Build Something <span className="text-sky-400">Great.</span>
-        </h2>
+  <h2 className="mt-5 text-4xl font-bold">
+    Let's Build Something <span className="text-sky-400">Great.</span>
+  </h2>
 
-        <p className="mx-auto mt-5 max-w-xl leading-7 text-gray-400">
-          Interested in cybersecurity, technology or collaboration?
-          Feel free to get in touch.
-        </p>
+  <p className="mx-auto mt-5 max-w-xl leading-7 text-gray-400">
+    Interested in cybersecurity, technology or collaboration?
+    Feel free to get in touch.
+  </p>
 
-        <a
-          href="mailto:alikhan206581@gmail.com"
-          className="mt-9 inline-block rounded-lg bg-sky-500 px-8 py-4 font-semibold text-black transition hover:bg-sky-300"
-        >
-          Send Me an Email
-        </a>
-      </section>
+  <div className="mt-9 flex flex-wrap justify-center gap-4">
+   <a
+  href="https://mail.google.com/mail/?view=cm&fs=1&to=alikhan206581@gmail.com"
+  target="_blank"
+  rel="noopener noreferrer"
+  className="rounded-lg bg-sky-500 px-8 py-4 font-semibold text-black transition hover:bg-sky-300"
+>
+  Send Me an Email
+</a>
+
+    <a
+      href="https://github.com/alikhan206581"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="rounded-lg border border-sky-500 px-8 py-4 font-semibold text-sky-400 transition hover:bg-sky-500 hover:text-black"
+    >
+      GitHub
+    </a>
+
+    <a
+      href="https://www.linkedin.com/in/muhammad-ali-imran-582136308/"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="rounded-lg border border-sky-500 px-8 py-4 font-semibold text-sky-400 transition hover:bg-sky-500 hover:text-black"
+    >
+      LinkedIn
+    </a>
+  </div>
+</section>
+
 
       {/* FOOTER */}
       <footer className="border-t border-white/10 px-6 py-8 text-center text-sm text-gray-500">
