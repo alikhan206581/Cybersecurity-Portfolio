@@ -109,8 +109,8 @@ export default function Home() {
                 Contact Me
               </a>
               <a
-  href="/Ali-Imran-CV.pdf"
-  download="Muhammad-Ali-Imran-CV.pdf"
+  href="/Ali-Imran-CV.pdf.pdf"
+  download="Muhammad-Ali-Imran-CV"
   className="inline-block rounded-lg border border-sky-500 px-8 py-4 font-semibold text-sky-400 transition hover:bg-sky-500 hover:text-black"
 >
   Download My CV
