@@ -1,606 +1,581 @@
 
+"use client";
+
+import { useEffect, useState } from "react";
+
 const projects = [
   {
     number: "01",
     title: "SentinelAI",
+    category: "CYBERSECURITY / AI",
     description:
       "AI-powered continuous cybersecurity monitoring and security validation platform.",
     tech: ["AI", "Cybersecurity", "Security Monitoring"],
     github: "https://github.com/alikhan206581/SentinelAI",
-    status: "Personal Project",
-    icon: "⌬",
+    status: "PERSONAL PROJECT",
+    symbol: "⌬",
   },
   {
     number: "02",
     title: "Login Monitoring System",
+    category: "LINUX / SECURITY",
     description:
-      "Linux-based Login Monitoring and Security Management System developed using Java Swing and Bash scripting for authentication, user management, and login monitoring.",
+      "Linux-based login monitoring and security management system developed using Java Swing and Bash scripting for authentication, user management, and login monitoring.",
     tech: ["Java Swing", "Bash", "Linux"],
     github: "https://github.com/alikhan206581/login-monitoring-system",
-    status: "University Project",
-    icon: "⌨",
+    status: "UNIVERSITY PROJECT",
+    symbol: "⌘",
   },
   {
     number: "03",
-    title: "Java Phone Book – DSA",
+    title: "Java Phone Book — DSA",
+    category: "JAVA / DATA STRUCTURES",
     description:
       "Iqra University final lab project built with Java and Data Structures and Algorithms. Supports adding, searching, updating, deleting, and displaying contacts.",
     tech: ["Java", "DSA"],
     github: "https://github.com/alikhan206581/Java-phoneBook-DSA",
-    status: "University Project",
-    icon: "▤",
+    status: "UNIVERSITY PROJECT",
+    symbol: "▤",
   },
   {
     number: "04",
     title: "Cybersecurity Portfolio",
+    category: "WEB DEVELOPMENT",
     description:
-      "My personal cybersecurity portfolio website, built with Next.js and TypeScript to present my skills and projects.",
+      "Personal cybersecurity portfolio website built with Next.js and TypeScript to present skills and projects.",
     tech: ["Next.js", "TypeScript", "Tailwind CSS"],
     github: "https://github.com/alikhan206581/Cybersecurity-Portfolio",
-    status: "Personal Project",
-    icon: "⌘",
+    status: "PERSONAL PROJECT",
+    symbol: "◈",
   },
 ];
 
 const skills = [
-  "Cybersecurity",
-  "Linux",
-  "Networking",
-  "Java",
-  "JavaScript",
-  "Next.js",
-  "Bash",
-  "Git & GitHub",
+  ["Cybersecurity", "SEC_01", "◈"],
+  ["Linux", "SYS_02", "⌘"],
+  ["Networking", "NET_03", "⌁"],
+  ["Java", "DEV_04", "♨"],
+  ["JavaScript", "DEV_05", "JS"],
+  ["Next.js", "WEB_06", "N"],
+  ["Bash", "OPS_07", "$_"],
+  ["Git & GitHub", "VCS_08", "⑂"],
+];
+
+const navItems = [
+  ["Home", "#home"],
+  ["About", "#about"],
+  ["Skills", "#skills"],
+  ["Projects", "#projects"],
+  ["Journey", "#journey"],
+  ["Contact", "#contact"],
 ];
 
 export default function Home() {
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.12 }
+    );
+
+    document.querySelectorAll(".reveal").forEach((element) => {
+      observer.observe(element);
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <main className="portfolio relative min-h-screen overflow-hidden bg-[#030817] text-white">
-      <style>{`
-        html {
-          scroll-behavior: smooth;
-        }
+    <main className="neural-site">
+      <div className="ambient ambient-one" />
+      <div className="ambient ambient-two" />
+      <div className="ambient ambient-three" />
+      <div className="noise-layer" />
 
-        .portfolio {
-          background:
-            radial-gradient(ellipse at 15% 15%, rgba(0,145,255,.13), transparent 35%),
-            radial-gradient(ellipse at 85% 45%, rgba(0,225,255,.09), transparent 35%),
-            #030817;
-        }
-
-        .hero-grid {
-          background-image:
-            linear-gradient(rgba(75,170,255,.045) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(75,170,255,.045) 1px, transparent 1px);
-          background-size: 55px 55px;
-          mask-image: linear-gradient(to bottom, black, transparent 90%);
-        }
-
-        .cyan-text {
-          background: linear-gradient(90deg, #38bdf8, #22d3ee, #60a5fa);
-          -webkit-background-clip: text;
-          background-clip: text;
-          color: transparent;
-        }
-
-        .hero-glow {
-          box-shadow:
-            0 0 80px rgba(14,165,233,.17),
-            inset 0 0 45px rgba(14,165,233,.06);
-        }
-
-        .glass-card {
-          background: linear-gradient(
-            145deg,
-            rgba(15,35,65,.78),
-            rgba(5,15,34,.72)
-          );
-          border: 1px solid rgba(125,211,252,.13);
-          backdrop-filter: blur(16px);
-          transition:
-            transform .35s ease,
-            border-color .35s ease,
-            box-shadow .35s ease;
-        }
-
-        .glass-card:hover {
-          transform: translateY(-8px);
-          border-color: rgba(34,211,238,.55);
-          box-shadow: 0 15px 45px rgba(0,145,255,.12);
-        }
-
-        .fade-up {
-          animation: fadeUp 1s ease both;
-        }
-
-        .fade-delay {
-          animation: fadeUp 1.2s .2s ease both;
-        }
-
-        .float {
-          animation: float 6s ease-in-out infinite;
-        }
-
-        .orbit {
-          animation: spin 22s linear infinite;
-        }
-
-        .pulse-dot {
-          animation: pulse 2s infinite;
-        }
-
-        .shine-button {
-          transition: all .3s ease;
-        }
-
-        .shine-button:hover {
-          box-shadow: 0 0 30px rgba(34,211,238,.35);
-          transform: translateY(-3px);
-        }
-
-        .section-label {
-          letter-spacing: .3em;
-          color: #38bdf8;
-        }
-
-        @keyframes fadeUp {
-          from {
-            opacity: 0;
-            transform: translateY(30px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        @keyframes float {
-          0%, 100% {
-            transform: translateY(0);
-          }
-          50% {
-            transform: translateY(-16px);
-          }
-        }
-
-        @keyframes spin {
-          from {
-            transform: rotate(0deg);
-          }
-          to {
-            transform: rotate(360deg);
-          }
-        }
-
-        @keyframes pulse {
-          0%, 100% {
-            opacity: 1;
-            box-shadow: 0 0 12px #22d3ee;
-          }
-          50% {
-            opacity: .45;
-            box-shadow: 0 0 3px #22d3ee;
-          }
-        }
-
-        ::selection {
-          background: #0891b2;
-          color: white;
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-          *, *::before, *::after {
-            animation-duration: .01ms !important;
-            animation-iteration-count: 1 !important;
-            scroll-behavior: auto !important;
-          }
-        }
-      `}</style>
-
-      {/* NAVIGATION */}
-      <nav className="fixed top-0 z-50 w-full border-b border-cyan-300/10 bg-[#030817]/80 px-5 py-5 backdrop-blur-2xl">
-        <div className="mx-auto flex max-w-7xl items-center justify-between">
-          <a href="#home" className="text-2xl font-black tracking-wider">
-            <span className="cyan-text">ALI</span>
-            <span className="text-white">.DEV</span>
+      <header className="site-header">
+        <nav className="nav-shell">
+          <a href="#home" className="brand-mark">
+            <span className="brand-symbol">◈</span>
+            <span>
+              ALI<span className="brand-muted">/IMRAN</span>
+            </span>
           </a>
 
-          <div className="hidden items-center gap-9 text-sm text-slate-400 md:flex">
-            {["Home", "About", "Skills", "Projects", "Contact"].map(
-              (item) => (
-                <a
-                  key={item}
-                  href={`#${item.toLowerCase()}`}
-                  className="transition hover:text-cyan-300"
-                >
-                  {item}
-                </a>
-              )
-            )}
+          <div className={`nav-links ${menuOpen ? "nav-open" : ""}`}>
+            {navItems.map(([label, href]) => (
+              <a
+                key={href}
+                href={href}
+                onClick={() => setMenuOpen(false)}
+              >
+                {label}
+              </a>
+            ))}
           </div>
 
-          <a
-            href="#contact"
-            className="rounded-full border border-cyan-400/40 px-5 py-2.5 text-sm text-cyan-300 transition hover:bg-cyan-400 hover:text-black"
-          >
-            Let's Talk ↗
+          <a className="nav-cta" href="#contact">
+            LET&apos;S CONNECT <span>↗</span>
           </a>
-        </div>
-      </nav>
 
-      {/* HERO */}
-      <section
-        id="home"
-        className="relative flex min-h-screen items-center px-6 pb-20 pt-32"
-      >
-        <div className="hero-grid pointer-events-none absolute inset-0" />
+          <button
+            className="menu-toggle"
+            onClick={() => setMenuOpen((open) => !open)}
+            aria-label="Toggle navigation"
+            aria-expanded={menuOpen}
+          >
+            <span />
+            <span />
+          </button>
+        </nav>
+      </header>
 
-        <div className="pointer-events-none absolute left-1/4 top-1/4 h-72 w-72 rounded-full bg-blue-500/10 blur-[120px]" />
+      <section id="home" className="hero-section">
+        <div className="hero-grid" />
 
-        <div className="pointer-events-none absolute bottom-10 right-10 h-80 w-80 rounded-full bg-cyan-400/10 blur-[120px]" />
-
-        <div className="relative mx-auto grid w-full max-w-7xl items-center gap-16 md:grid-cols-2">
-          <div className="fade-up">
-            <div className="mb-8 inline-flex items-center gap-3 rounded-full border border-cyan-400/20 bg-cyan-400/5 px-4 py-2">
-              <span className="pulse-dot h-2 w-2 rounded-full bg-cyan-400" />
-
-              <span className="font-mono text-xs tracking-[.2em] text-cyan-300">
-                CYBERSECURITY ENTHUSIAST
-              </span>
+        <div className="hero-inner">
+          <div className="hero-copy">
+            <div className="eyebrow reveal">
+              <span className="status-light" />
+              <span>AVAILABLE FOR OPPORTUNITIES</span>
+              <span className="eyebrow-line" />
+              <span className="eyebrow-code">KHI / PK</span>
             </div>
 
-            <p className="mb-4 font-mono text-sm tracking-widest text-slate-500">
-              HELLO, WORLD. I'M
-            </p>
+            <p className="hero-kicker reveal">HELLO, WORLD. I AM</p>
 
-            <h1 className="text-5xl font-black leading-[1.12] tracking-tight sm:text-6xl lg:text-7xl">
+            <h1 className="hero-title reveal">
               Muhammad
-              <br />
-              <span className="cyan-text">Ali Imran.</span>
+              <span className="hero-name-gradient">
+                Ali Imran<span className="title-period">.</span>
+              </span>
             </h1>
 
-            <h2 className="mt-7 text-xl font-medium text-slate-300 md:text-2xl">
-              Cybersecurity Student
-              <span className="text-cyan-400"> & Developer</span>
-            </h2>
+            <div className="hero-role reveal">
+              <span className="role-bracket">[</span>
+              CYBERSECURITY STUDENT
+              <span className="role-divider">/</span>
+              DEVELOPER
+              <span className="role-bracket">]</span>
+            </div>
 
-            <p className="mt-6 max-w-xl text-base leading-8 text-slate-400">
-              Exploring cybersecurity, networking, Linux and software
-              development. Building practical projects and continuously
-              learning new technologies.
+            <p className="hero-description reveal">
+              Exploring the space where security meets technology. I build,
+              experiment and learn across cybersecurity, Linux, networking
+              and software development.
             </p>
 
-            <div className="mt-10 flex flex-wrap gap-4">
-              <a
-                href="#projects"
-                className="shine-button rounded-lg bg-gradient-to-r from-sky-500 to-cyan-400 px-7 py-4 font-bold text-[#03101c]"
-              >
-                Explore My Work ↗
+            <div className="hero-actions reveal">
+              <a href="#projects" className="button-primary">
+                EXPLORE MY WORK <span>↗</span>
               </a>
 
               <a
                 href="/Ali-Imran-CV.pdf"
                 download="Muhammad-Ali-Imran-CV.pdf"
-                className="shine-button rounded-lg border border-cyan-400/40 px-7 py-4 font-semibold text-cyan-300 hover:bg-cyan-400/10"
+                className="button-secondary"
               >
-                Download CV ↓
+                DOWNLOAD CV <span>↓</span>
               </a>
             </div>
 
-            <div className="mt-12 flex flex-wrap gap-8 text-sm text-slate-500">
+            <div className="hero-stats reveal">
               <div>
-                <p className="text-2xl font-bold text-white">04</p>
-                <p>Projects</p>
+                <strong>04</strong>
+                <span>PROJECTS</span>
               </div>
-
+              <i />
               <div>
-                <p className="text-2xl font-bold text-white">08</p>
-                <p>Technologies</p>
+                <strong>08</strong>
+                <span>CORE SKILLS</span>
               </div>
-
+              <i />
               <div>
-                <p className="text-2xl font-bold text-white">∞</p>
-                <p>Learning mindset</p>
+                <strong>∞</strong>
+                <span>LEARNING MINDSET</span>
               </div>
             </div>
           </div>
 
-          {/* ANIMATED CYBER VISUAL */}
-          <div className="fade-delay flex justify-center">
-            <div className="float relative flex h-[300px] w-[300px] items-center justify-center sm:h-[390px] sm:w-[390px]">
-              <div className="hero-glow absolute inset-8 rounded-full border border-cyan-400/20 bg-blue-500/[0.04]" />
+          <div
+            className="hero-art reveal"
+            aria-label="Animated neural network visual"
+          >
+            <div className="art-coordinate coordinate-top">
+              NEURAL NETWORK // 001
+            </div>
 
-              <div className="orbit absolute inset-3 rounded-full border border-dashed border-cyan-400/30" />
+            <div className="orbit orbit-outer">
+              <span className="orbit-node node-a" />
+              <span className="orbit-node node-b" />
+            </div>
 
-              <div className="absolute inset-12 rounded-full border border-blue-400/20" />
+            <div className="orbit orbit-middle">
+              <span className="orbit-node node-c" />
+            </div>
 
-              <div className="absolute inset-20 rounded-full border border-cyan-300/20" />
+            <div className="orbit orbit-inner" />
+            <div className="core-halo" />
 
-              <div className="absolute left-7 top-20 h-3 w-3 rounded-full bg-cyan-300 shadow-[0_0_20px_#22d3ee]" />
-
-              <div className="absolute bottom-16 right-7 h-2 w-2 rounded-full bg-blue-400 shadow-[0_0_20px_#3b82f6]" />
-
-              <div className="relative z-10 text-center">
-                <div className="cyan-text text-8xl font-black sm:text-9xl">
-                  ⌘
-                </div>
-
-                <p className="mt-5 font-mono text-sm tracking-[.3em] text-cyan-300">
-                  SYSTEM ONLINE
-                </p>
-
-                <p className="mt-3 text-xs tracking-widest text-slate-500">
-                  LEARN · BUILD · SECURE
-                </p>
-              </div>
-
-              <div className="absolute -bottom-2 rounded-full border border-cyan-400/20 bg-[#07172c] px-5 py-2 font-mono text-xs text-cyan-300">
-                [ ACCESS GRANTED ]
+            <div className="neural-core">
+              <div className="core-inner">
+                <span className="core-glyph">N</span>
+                <span className="core-caption">
+                  NEURAL
+                  <br />
+                  ECLIPSE
+                </span>
               </div>
             </div>
+
+            <div className="art-crosshair crosshair-one">+</div>
+            <div className="art-crosshair crosshair-two">+</div>
+
+            <div className="art-coordinate coordinate-bottom">
+              SYSTEM STATUS: <b>LEARNING</b>
+            </div>
+
+            <div className="floating-tag tag-top">01 / SECURE</div>
+            <div className="floating-tag tag-bottom">02 / CREATE</div>
           </div>
         </div>
 
-        <div className="absolute bottom-7 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 text-xs tracking-widest text-slate-600 md:flex">
-          SCROLL TO EXPLORE
-          <span className="h-8 w-px bg-gradient-to-b from-cyan-400 to-transparent" />
+        <div className="hero-bottomline">
+          <span>INDEPENDENT THINKING. CONTINUOUS LEARNING.</span>
+          <a href="#about">
+            SCROLL TO DISCOVER <span>↓</span>
+          </a>
+          <span className="hero-index">01 — 06</span>
         </div>
       </section>
 
-      {/* ABOUT */}
-      <section id="about" className="relative px-6 py-28">
-        <div className="mx-auto max-w-6xl">
-          <p className="section-label font-mono text-xs">
-            // 01 — ABOUT ME
-          </p>
-
-          <div className="mt-5 grid gap-12 md:grid-cols-2 md:items-center">
-            <div>
-              <h2 className="text-4xl font-bold leading-tight md:text-5xl">
-                Building my future in
-                <span className="cyan-text"> Cybersecurity.</span>
-              </h2>
-
-              <p className="mt-8 leading-8 text-slate-400">
-                I am currently pursuing a BS in Cyber Security at Iqra
-                University. I enjoy learning about information security,
-                operating systems, networking and programming. My goal is
-                to develop practical technical skills through hands-on
-                projects and continuous learning.
-              </p>
-            </div>
-
-            <div className="glass-card rounded-2xl p-8">
-              <p className="font-mono text-sm text-cyan-300">
-                &gt; CURRENT STATUS
-              </p>
-
-              <div className="mt-7 space-y-6">
-                <div>
-                  <p className="text-sm text-slate-500">Education</p>
-                  <p className="mt-1 text-lg font-semibold">
-                    BS Cyber Security
-                  </p>
-                  <p className="text-sm text-slate-400">
-                    Iqra University, Karachi
-                  </p>
-                </div>
-
-                <div className="h-px bg-white/10" />
-
-                <div>
-                  <p className="text-sm text-slate-500">Main Interests</p>
-                  <p className="mt-1 font-semibold text-slate-200">
-                    Cybersecurity · Networking · Linux
-                  </p>
-                </div>
-
-                <div className="h-px bg-white/10" />
-
-                <div>
-                  <p className="text-sm text-slate-500">Career Goal</p>
-                  <p className="mt-1 font-semibold text-cyan-300">
-                    Growing in IT & Cybersecurity
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
+      <section id="about" className="section-block about-section">
+        <div className="section-heading reveal">
+          <span className="section-index">01 / PROFILE</span>
+          <span className="section-overline">A LITTLE ABOUT ME</span>
         </div>
-      </section>
 
-      {/* SKILLS */}
-      <section
-        id="skills"
-        className="border-y border-cyan-300/10 bg-[#071329]/70 px-6 py-28"
-      >
-        <div className="mx-auto max-w-6xl">
-          <p className="section-label font-mono text-xs">
-            // 02 — TECHNICAL SKILLS
-          </p>
+        <div className="about-layout">
+          <div className="about-main reveal">
+            <p className="micro-label">THE MINDSET</p>
 
-          <h2 className="mt-5 text-4xl font-bold md:text-5xl">
-            My <span className="cyan-text">Technical Arsenal.</span>
-          </h2>
-
-          <p className="mt-5 max-w-xl leading-7 text-slate-400">
-            Technologies and tools I am learning and using to build my
-            technical foundation.
-          </p>
-
-          <div className="mt-12 grid grid-cols-2 gap-4 md:grid-cols-4">
-            {skills.map((skill, index) => (
-              <div
-                key={skill}
-                className="glass-card group rounded-xl p-6"
-              >
-                <p className="font-mono text-xs text-cyan-400/60">
-                  SKILL_0{index + 1}
-                </p>
-
-                <h3 className="mt-4 text-base font-semibold text-slate-200 transition group-hover:text-cyan-300 sm:text-lg">
-                  {skill}
-                </h3>
-
-                <div className="mt-5 h-1 overflow-hidden rounded-full bg-white/10">
-                  <div className="h-full w-2/3 rounded-full bg-gradient-to-r from-blue-500 to-cyan-300 transition-all duration-500 group-hover:w-full" />
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* REAL GITHUB PROJECTS */}
-      <section id="projects" className="px-6 py-28">
-        <div className="mx-auto max-w-6xl">
-          <p className="section-label font-mono text-xs">
-            // 03 — SELECTED WORK
-          </p>
-
-          <div className="mt-5 flex flex-wrap items-end justify-between gap-5">
-            <h2 className="text-4xl font-bold md:text-5xl">
-              Featured <span className="cyan-text">Projects.</span>
+            <h2>
+              Curious by nature.
+              <br />
+              <span className="text-gradient">
+                Driven by technology.
+              </span>
             </h2>
 
-            <a
-              href="https://github.com/alikhan206581"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-sm text-cyan-300 transition hover:text-white"
-            >
-              Explore all GitHub repositories ↗
+            <p className="about-description">
+              I am pursuing a BS in Cyber Security at Iqra University,
+              Karachi. I enjoy understanding how systems work, exploring
+              security concepts and turning what I learn into practical
+              projects. My focus is on building a strong foundation in
+              cybersecurity, operating systems, networking and programming.
+            </p>
+
+            <a className="text-link" href="#journey">
+              EXPLORE MY JOURNEY <span>↗</span>
             </a>
           </div>
 
-          <p className="mt-5 max-w-xl leading-7 text-slate-400">
-            A selection of my personal and university projects in
-            cybersecurity, programming and software development.
-          </p>
+          <div className="identity-panel reveal">
+            <div className="panel-topline">
+              <span>IDENTITY FILE</span>
+              <span className="panel-live">
+                <i /> ACTIVE
+              </span>
+            </div>
 
-          <div className="mt-12 grid gap-6 md:grid-cols-2">
-            {projects.map((project) => (
-              <article
-                key={project.number}
-                className="glass-card group rounded-2xl p-7"
-              >
-                <div className="flex items-center justify-between">
-                  <span className="font-mono text-sm text-cyan-300">
-                    PROJECT_{project.number}
-                  </span>
+            <div className="identity-monogram">
+              AI<span>.</span>
+            </div>
 
-                  <span className="rounded-full border border-cyan-400/20 bg-cyan-400/5 px-3 py-1 text-xs text-slate-400">
-                    {project.status}
-                  </span>
-                </div>
+            <div className="identity-name">MUHAMMAD ALI IMRAN</div>
+            <div className="identity-role">
+              CYBERSECURITY STUDENT / DEVELOPER
+            </div>
 
-                <div className="my-8 flex h-16 w-16 items-center justify-center rounded-xl border border-cyan-400/20 bg-cyan-400/10 text-3xl text-cyan-300">
-                  {project.icon}
-                </div>
+            <div className="identity-rule" />
 
-                <h3 className="text-2xl font-bold text-white transition group-hover:text-cyan-300">
-                  {project.title}
-                </h3>
+            <div className="identity-data">
+              <div>
+                <span>BASE</span>
+                <b>KARACHI, PAKISTAN</b>
+              </div>
+              <div>
+                <span>EDUCATION</span>
+                <b>BS CYBER SECURITY</b>
+              </div>
+              <div>
+                <span>INSTITUTION</span>
+                <b>IQRA UNIVERSITY</b>
+              </div>
+              <div>
+                <span>FOCUS</span>
+                <b>SECURITY / SYSTEMS / CODE</b>
+              </div>
+            </div>
 
-                <p className="mt-4 min-h-24 leading-7 text-slate-400">
-                  {project.description}
-                </p>
-
-                <div className="mt-6 flex flex-wrap gap-2">
-                  {project.tech.map((technology) => (
-                    <span
-                      key={technology}
-                      className="rounded-full border border-cyan-400/15 bg-cyan-400/[0.07] px-3 py-1.5 text-xs text-cyan-200"
-                    >
-                      {technology}
-                    </span>
-                  ))}
-                </div>
-
-                <a
-                  href={project.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-8 inline-flex items-center gap-2 font-semibold text-cyan-300 transition hover:text-white"
-                >
-                  View on GitHub <span>↗</span>
-                </a>
-              </article>
-            ))}
+            <div className="panel-corner">AI / 001</div>
           </div>
         </div>
       </section>
 
-      {/* CONTACT */}
-      <section
-        id="contact"
-        className="relative overflow-hidden border-t border-cyan-300/10 bg-[#071329]/80 px-6 py-28 text-center"
-      >
-        <div className="pointer-events-none absolute left-1/2 top-1/2 h-80 w-80 -translate-x-1/2 -translate-y-1/2 rounded-full bg-cyan-500/10 blur-[100px]" />
+      <section id="skills" className="section-block skills-section">
+        <div className="section-heading reveal">
+          <span className="section-index">02 / CAPABILITIES</span>
+          <span className="section-overline">TOOLS OF THE TRADE</span>
+        </div>
 
-        <div className="relative mx-auto max-w-3xl">
-          <p className="section-label font-mono text-xs">
-            // 04 — GET IN TOUCH
+        <div className="skills-intro reveal">
+          <h2>
+            My technical <span className="text-gradient">arsenal.</span>
+          </h2>
+          <p>
+            Technologies and disciplines I am learning and using to grow my
+            technical foundation.
           </p>
+        </div>
 
-          <h2 className="mt-6 text-4xl font-bold md:text-6xl">
-            Let's Build Something
-            <br />
-            <span className="cyan-text">Great Together.</span>
+        <div className="skills-grid">
+          {skills.map(([name, code, symbol], index) => (
+            <article
+              className="skill-tile reveal"
+              key={name}
+              style={{ transitionDelay: `${index * 70}ms` }}
+            >
+              <div className="skill-top">
+                <span>{code}</span>
+                <span>0{index + 1}</span>
+              </div>
+
+              <div className="skill-symbol">{symbol}</div>
+              <h3>{name}</h3>
+
+              <div className="skill-bottom">
+                <span>CONTINUOUS DEVELOPMENT</span>
+                <span className="skill-arrow">↗</span>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section id="projects" className="section-block projects-section">
+        <div className="section-heading reveal">
+          <span className="section-index">03 / SELECTED OPERATIONS</span>
+          <span className="section-overline">IDEAS INTO REALITY</span>
+        </div>
+
+        <div className="projects-heading reveal">
+          <h2>
+            Selected <span className="text-gradient">projects.</span>
           </h2>
 
-          <p className="mx-auto mt-7 max-w-xl leading-8 text-slate-400">
-            Interested in cybersecurity, technology or collaboration?
-            Feel free to get in touch. I would be happy to connect.
-          </p>
+          <a
+            href="https://github.com/alikhan206581"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-link"
+          >
+            ALL REPOSITORIES <span>↗</span>
+          </a>
+        </div>
 
-          <div className="mt-10 flex flex-wrap justify-center gap-4">
-            <a
-              href="https://mail.google.com/mail/?view=cm&fs=1&to=alikhan206581@gmail.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="shine-button rounded-lg bg-gradient-to-r from-sky-500 to-cyan-400 px-8 py-4 font-bold text-[#03101c]"
-            >
-              Send Me an Email ↗
-            </a>
+        <p className="projects-lead reveal">
+          A collection of personal and university work across cybersecurity,
+          systems and software development.
+        </p>
 
-            <a
-              href="https://github.com/alikhan206581"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="shine-button rounded-lg border border-cyan-400/40 px-8 py-4 font-semibold text-cyan-300 hover:bg-cyan-400/10"
+        <div className="projects-grid">
+          {projects.map((project, index) => (
+            <article
+              className={`project-card reveal ${
+                index === 0 ? "project-featured" : ""
+              }`}
+              key={project.number}
+              style={{ transitionDelay: `${index * 90}ms` }}
             >
-              GitHub ↗
-            </a>
+              <div className="project-card-top">
+                <span className="project-number">
+                  PROJECT / {project.number}
+                </span>
+                <span className="project-status">
+                  <i /> {project.status}
+                </span>
+              </div>
 
-            <a
-              href="https://www.linkedin.com/in/muhammad-ali-imran-582136308/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="shine-button rounded-lg border border-cyan-400/40 px-8 py-4 font-semibold text-cyan-300 hover:bg-cyan-400/10"
-            >
-              LinkedIn ↗
-            </a>
+              <div className="project-visual">
+                <span className="project-symbol">{project.symbol}</span>
+                <span className="project-visual-ring ring-one" />
+                <span className="project-visual-ring ring-two" />
+                <span className="project-category">{project.category}</span>
+              </div>
+
+              <h3>{project.title}</h3>
+              <p className="project-description">{project.description}</p>
+
+              <div className="project-tech">
+                {project.tech.map((technology) => (
+                  <span key={technology}>{technology}</span>
+                ))}
+              </div>
+
+              <a
+                href={project.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="project-link"
+              >
+                VIEW SOURCE CODE <span>↗</span>
+              </a>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section id="journey" className="section-block journey-section">
+        <div className="section-heading reveal">
+          <span className="section-index">04 / THE JOURNEY</span>
+          <span className="section-overline">LEARNING IN MOTION</span>
+        </div>
+
+        <div className="journey-layout">
+          <div className="journey-title reveal">
+            <h2>
+              Every step
+              <br />
+              builds the <span className="text-gradient">next.</span>
+            </h2>
+            <p>
+              A growing foundation shaped by education, experimentation and
+              hands-on learning.
+            </p>
+          </div>
+
+          <div className="timeline">
+            <article className="timeline-item reveal">
+              <span className="timeline-point" />
+              <span className="timeline-label">CURRENT</span>
+              <h3>BS Cyber Security</h3>
+              <p>Iqra University, Karachi</p>
+              <span className="timeline-detail">
+                Building knowledge in cybersecurity, systems and computing.
+              </span>
+            </article>
+
+            <article className="timeline-item reveal">
+              <span className="timeline-point" />
+              <span className="timeline-label">2023 — 2024</span>
+              <h3>Intermediate</h3>
+              <p>PECHS Government Degree Boys College</p>
+            </article>
+
+            <article className="timeline-item reveal">
+              <span className="timeline-point" />
+              <span className="timeline-label">2022</span>
+              <h3>Matriculation</h3>
+              <p>Uloom n Hikmah Islamic School</p>
+            </article>
           </div>
         </div>
       </section>
 
-      {/* FOOTER */}
-      <footer className="border-t border-white/10 px-6 py-8">
-        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 text-sm text-slate-500">
-          <p>
-            © 2026 Muhammad Ali Imran. All rights reserved.
+      <section id="contact" className="contact-section">
+        <div className="contact-orb" />
+
+        <div className="contact-content reveal">
+          <span className="section-index">05 / OPEN CHANNEL</span>
+          <p className="contact-overline">
+            HAVE A PROJECT OR OPPORTUNITY?
           </p>
 
-          <a
-            href="#home"
-            className="transition hover:text-cyan-300"
-          >
-            Back to top ↑
-          </a>
+          <h2>
+            Let&apos;s make
+            <br />
+            <span className="text-gradient">something matter.</span>
+          </h2>
+
+          <p className="contact-description">
+            Interested in technology, cybersecurity or collaboration?
+            I&apos;d be glad to connect and hear what you&apos;re working on.
+          </p>
+
+          
+<div className="contact-methods">
+  <a
+    className="contact-email"
+    href="https://mail.google.com/mail/?view=cm&fs=1&to=alikhan206581@gmail.com"
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    <span className="contact-method-icon">✉</span>
+    <span>
+      <small>EMAIL ME</small>
+      ALIKHAN206581@GMAIL.COM
+    </span>
+    <span className="contact-arrow">↗</span>
+  </a>
+
+  <a className="contact-email" href="tel:+923362065801">
+    <span className="contact-method-icon">☎</span>
+    <span>
+      <small>CALL ME</small>
+      +92 336 2065801
+    </span>
+    <span className="contact-arrow">↗</span>
+  </a>
+</div>
+
+
+          
+<div className="social-links">
+  <a
+    href="https://github.com/alikhan206581"
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    <span className="social-icon">⌘</span>
+    GITHUB
+    <span className="social-arrow">↗</span>
+  </a>
+
+  <a
+    href="https://www.linkedin.com/in/muhammad-ali-imran-582136308/"
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    <span className="linkedin-icon">in</span>
+    LINKEDIN
+    <span className="social-arrow">↗</span>
+  </a>
+
+  <a
+    href="/Ali-Imran-CV.pdf"
+    download="Muhammad-Ali-Imran-CV.pdf"
+  >
+    <span className="social-icon">↓</span>
+    DOWNLOAD CV
+  </a>
+</div>
+
         </div>
-      </footer>
+
+        <div className="contact-footer">
+          <span>NEURAL ECLIPSE / PERSONAL PORTFOLIO</span>
+          <span>© 2026 MUHAMMAD ALI IMRAN</span>
+          <a href="#home">BACK TO TOP ↑</a>
+        </div>
+      </section>
     </main>
   );
 }
-
