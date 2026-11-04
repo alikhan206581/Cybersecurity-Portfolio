@@ -822,6 +822,13 @@ a {
   line-height: 1.9;
 }
 
+.github-sync-status {
+  margin-top: 10px;
+  color: #00e5ff;
+  font: 8px monospace;
+  letter-spacing: .12em;
+}
+
 .projects-grid {
   display: grid;
   grid-template-columns: repeat(2,1fr);
@@ -1455,4 +1462,232 @@ a {
     min-height: 50px;
     font-size: 11px;
   }
+}
+/* Interactive card hover animation */
+.project-card,
+.skill-card,
+.info-card,
+.journey-card {
+  position: relative;
+  transition:
+    transform 0.35s ease,
+    box-shadow 0.35s ease,
+    border-color 0.35s ease;
+  transform: translateY(0) scale(1);
+  transform-origin: center;
+  cursor: pointer;
+}
+
+.project-card:hover,
+.skill-card:hover,
+.info-card:hover,
+.journey-card:hover {
+  transform: translateY(-9px) scale(1.025);
+  border-color: rgba(0, 229, 255, 0.65);
+  box-shadow:
+    0 15px 40px rgba(0, 229, 255, 0.12),
+    0 0 20px rgba(139, 92, 246, 0.12);
+  z-index: 5;
+}
+
+.project-card:active,
+.skill-card:active,
+.info-card:active,
+.journey-card:active {
+  transform: translateY(-3px) scale(0.99);
+}
+
+/* Smooth animation for nested card content */
+.project-card > *,
+.skill-card > *,
+.info-card > *,
+.journey-card > * {
+  transition: transform 0.35s ease;
+}
+
+.project-card:hover > *,
+.skill-card:hover > *,
+.info-card:hover > *,
+.journey-card:hover > * {
+  transform: translateY(-2px);
+}
+
+/* Disable hover movement on touch devices */
+@media (hover: none) {
+  .project-card:hover,
+  .skill-card:hover,
+  .info-card:hover,
+  .journey-card:hover {
+    transform: none;
+    box-shadow: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .project-card,
+  .skill-card,
+  .info-card,
+  .journey-card {
+    transition: none;
+  }
+}
+/* Identity card hover effect */
+.identity-card {
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+
+.identity-card:hover {
+  transform: translateY(-7px);
+  box-shadow: 0 12px 35px rgba(0, 229, 255, 0.16);
+}
+
+/* Move text slightly upward on hover */
+.identity-card:hover .identity-content {
+  transform: translateY(-5px);
+}
+
+.identity-content {
+  transition: transform 0.35s ease;
+}
+
+/* Make important text easier to read */
+.identity-card:hover h1,
+.identity-card:hover h2,
+.identity-card:hover p {
+  transition: transform 0.35s ease;
+  transform: translateY(-2px);
+}
+/* IDENTITY PANEL — POP-UP HOVER */
+.identity-panel {
+  position: relative;
+  z-index: 1;
+  transform: translateY(0) scale(1);
+  transition:
+    transform 0.35s ease,
+    box-shadow 0.35s ease,
+    border-color 0.35s ease;
+}
+
+.identity-panel:hover {
+  transform: translateY(-12px) scale(1.025);
+  z-index: 10;
+  border-color: rgba(0, 229, 255, 0.8);
+  box-shadow:
+    0 20px 45px rgba(0, 229, 255, 0.18),
+    0 0 25px rgba(139, 92, 246, 0.2);
+}
+
+/* LIFT IDENTITY TEXT */
+.identity-panel .identity-monogram,
+.identity-panel .identity-name,
+.identity-panel .identity-role,
+.identity-panel .identity-data {
+  transition: transform 0.35s ease;
+}
+
+.identity-panel:hover .identity-monogram,
+.identity-panel:hover .identity-name,
+.identity-panel:hover .identity-role,
+.identity-panel:hover .identity-data {
+  transform: translateY(-4px);
+}
+
+/* SKILL CARDS */
+.skill-tile {
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+
+.skill-tile:hover {
+  transform: translateY(-10px) scale(1.035);
+  box-shadow: 0 15px 35px rgba(0, 229, 255, 0.15);
+  z-index: 5;
+}
+
+/* PROJECT CARDS */
+.project-card {
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+
+.project-card:hover {
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 0 18px 40px rgba(0, 229, 255, 0.15);
+  z-index: 5;
+}
+
+/* FORCE IDENTITY CARD HOVER POP-UP */
+@media (hover: hover) and (pointer: fine) {
+  .identity-panel.reveal:hover,
+  .identity-panel.reveal.is-visible:hover {
+    transform: translateY(-14px) scale(1.04) !important;
+    border-color: #00e5ff !important;
+    box-shadow:
+      0 20px 50px rgba(0, 229, 255, 0.25),
+      0 0 30px rgba(139, 92, 246, 0.2) !important;
+    z-index: 20;
+    position: relative;
+  }
+
+  .skill-tile.reveal:hover,
+  .project-card.reveal:hover {
+    transform: translateY(-12px) scale(1.035) !important;
+    box-shadow: 0 18px 40px rgba(0, 229, 255, 0.2) !important;
+    z-index: 10;
+  }
+}
+.profile-photo-status {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 18px 8px;
+  color: #00e5ff;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  line-height: 1.6;
+}
+
+.status-light {
+  width: 8px;
+  height: 8px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: #b5ff5c;
+  box-shadow: 0 0 12px #b5ff5c;
+}
+
+.profile-photo-label {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 18px 8px 12px;
+  border-top: 1px solid rgba(0, 229, 255, 0.2);
+}
+
+.identity-tag {
+  color: #00e5ff;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  line-height: 1.8;
+}
+
+.profile-photo-label strong {
+  color: #ffffff;
+  font-size: clamp(16px, 2vw, 21px);
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  line-height: 1.5;
+}
+
+.profile-photo-label small {
+  color: #a5acc4;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1.8px;
+  line-height: 1.8;
+}
+
+.profile-photo-label small span {
+  color: #00e5ff;
+  padding: 0 5px;
 }

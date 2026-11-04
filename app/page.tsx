@@ -1,9 +1,19 @@
-
 "use client";
 
 import { useEffect, useState } from "react";
 
-const projects = [
+type Project = {
+  number: string;
+  title: string;
+  category: string;
+  description: string;
+  tech: string[];
+  github: string;
+  status: string;
+  symbol: string;
+};
+
+const initialProjects: Project[] = [
   {
     number: "01",
     title: "SentinelAI",
@@ -72,6 +82,10 @@ const navItems = [
 
 export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [projects, setProjects] = useState(initialProjects);
+  const [repositorySyncState, setRepositorySyncState] = useState<
+    "loading" | "synced" | "error"
+  >("loading");
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -86,11 +100,72 @@ export default function Home() {
       { threshold: 0.12 }
     );
 
-    document.querySelectorAll(".reveal").forEach((element) => {
-      observer.observe(element);
-    });
+    const observedElements = new WeakSet<Element>();
+    const observeRevealElements = (root: ParentNode) => {
+      root.querySelectorAll(".reveal").forEach((element) => {
+        if (!observedElements.has(element)) {
+          observedElements.add(element);
+          observer.observe(element);
+        }
+      });
+    };
 
-    return () => observer.disconnect();
+    observeRevealElements(document);
+
+    const projectsGrid = document.querySelector(".projects-grid");
+    let mutationObserver: MutationObserver | undefined;
+    if (projectsGrid) {
+      mutationObserver = new MutationObserver(() =>
+        observeRevealElements(projectsGrid)
+      );
+      mutationObserver.observe(projectsGrid, { childList: true });
+    }
+
+    return () => {
+      observer.disconnect();
+      mutationObserver?.disconnect();
+    };
+  }, []);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const loadProjects = async () => {
+      try {
+        const response = await fetch("/api/github-repos", {
+          cache: "no-store",
+        });
+
+        if (!response.ok) {
+          throw new Error("Unable to load GitHub repositories");
+        }
+
+        const updatedProjects: Project[] = await response.json();
+
+        if (!Array.isArray(updatedProjects)) {
+          throw new Error("GitHub repository response was invalid");
+        }
+
+        if (isMounted) {
+          setProjects(updatedProjects);
+          setRepositorySyncState("synced");
+        }
+      } catch {
+        if (isMounted) {
+          setRepositorySyncState("error");
+        }
+      }
+    };
+
+    void loadProjects();
+    const refreshInterval = window.setInterval(() => {
+      void loadProjects();
+    }, 60 * 1000);
+
+    return () => {
+      isMounted = false;
+      window.clearInterval(refreshInterval);
+    };
   }, []);
 
   return (
@@ -100,6 +175,7 @@ export default function Home() {
       <div className="ambient ambient-three" />
       <div className="noise-layer" />
 
+      {/* NAVIGATION */}
       <header className="site-header">
         <nav className="nav-shell">
           <a href="#home" className="brand-mark">
@@ -137,6 +213,7 @@ export default function Home() {
         </nav>
       </header>
 
+      {/* HOME / HERO */}
       <section id="home" className="hero-section">
         <div className="hero-grid" />
 
@@ -188,7 +265,7 @@ export default function Home() {
 
             <div className="hero-stats reveal">
               <div>
-                <strong>04</strong>
+                <strong>{String(projects.length).padStart(2, "0")}</strong>
                 <span>PROJECTS</span>
               </div>
               <i />
@@ -204,46 +281,35 @@ export default function Home() {
             </div>
           </div>
 
+          {/* PROFESSIONAL PROFILE PHOTO */}
           <div
             className="hero-art reveal"
-            aria-label="Animated neural network visual"
+            aria-label="Professional profile photograph"
           >
-            <div className="art-coordinate coordinate-top">
-              NEURAL NETWORK // 001
-            </div>
+            <div className="profile-photo-frame">
+              <div className="profile-photo-glow" />
 
-            <div className="orbit orbit-outer">
-              <span className="orbit-node node-a" />
-              <span className="orbit-node node-b" />
-            </div>
-
-            <div className="orbit orbit-middle">
-              <span className="orbit-node node-c" />
-            </div>
-
-            <div className="orbit orbit-inner" />
-            <div className="core-halo" />
-
-            <div className="neural-core">
-              <div className="core-inner">
-                <span className="core-glyph">N</span>
-                <span className="core-caption">
-                  NEURAL
-                  <br />
-                  ECLIPSE
-                </span>
+              <div className="profile-photo-inner">
+                <img
+                  src="/profile.jpeg"
+                  alt="Muhammad Ali Imran - Cybersecurity Student and Developer"
+                  className="profile-photo"
+                />
               </div>
+
+             <div className="profile-info">
+  <div className="profile-status">
+    <span className="status-light"></span>
+    AVAILABLE FOR OPPORTUNITIES
+  </div>
+
+  <div className="profile-identity">
+    <span className="identity-tag">IDENTITY VERIFIED</span>
+    <h3>MUHAMMAD ALI IMRAN</h3>
+    <p>CYBERSECURITY STUDENT <span>/</span> DEVELOPER</p>
+  </div>
+</div>
             </div>
-
-            <div className="art-crosshair crosshair-one">+</div>
-            <div className="art-crosshair crosshair-two">+</div>
-
-            <div className="art-coordinate coordinate-bottom">
-              SYSTEM STATUS: <b>LEARNING</b>
-            </div>
-
-            <div className="floating-tag tag-top">01 / SECURE</div>
-            <div className="floating-tag tag-bottom">02 / CREATE</div>
           </div>
         </div>
 
@@ -256,6 +322,7 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ABOUT */}
       <section id="about" className="section-block about-section">
         <div className="section-heading reveal">
           <span className="section-index">01 / PROFILE</span>
@@ -287,6 +354,7 @@ export default function Home() {
             </a>
           </div>
 
+          {/* IDENTITY CARD */}
           <div className="identity-panel reveal">
             <div className="panel-topline">
               <span>IDENTITY FILE</span>
@@ -300,6 +368,7 @@ export default function Home() {
             </div>
 
             <div className="identity-name">MUHAMMAD ALI IMRAN</div>
+
             <div className="identity-role">
               CYBERSECURITY STUDENT / DEVELOPER
             </div>
@@ -311,14 +380,17 @@ export default function Home() {
                 <span>BASE</span>
                 <b>KARACHI, PAKISTAN</b>
               </div>
+
               <div>
                 <span>EDUCATION</span>
                 <b>BS CYBER SECURITY</b>
               </div>
+
               <div>
                 <span>INSTITUTION</span>
                 <b>IQRA UNIVERSITY</b>
               </div>
+
               <div>
                 <span>FOCUS</span>
                 <b>SECURITY / SYSTEMS / CODE</b>
@@ -330,6 +402,7 @@ export default function Home() {
         </div>
       </section>
 
+      {/* SKILLS */}
       <section id="skills" className="section-block skills-section">
         <div className="section-heading reveal">
           <span className="section-index">02 / CAPABILITIES</span>
@@ -340,6 +413,7 @@ export default function Home() {
           <h2>
             My technical <span className="text-gradient">arsenal.</span>
           </h2>
+
           <p>
             Technologies and disciplines I am learning and using to grow my
             technical foundation.
@@ -359,6 +433,7 @@ export default function Home() {
               </div>
 
               <div className="skill-symbol">{symbol}</div>
+
               <h3>{name}</h3>
 
               <div className="skill-bottom">
@@ -370,6 +445,7 @@ export default function Home() {
         </div>
       </section>
 
+      {/* PROJECTS */}
       <section id="projects" className="section-block projects-section">
         <div className="section-heading reveal">
           <span className="section-index">03 / SELECTED OPERATIONS</span>
@@ -396,6 +472,15 @@ export default function Home() {
           systems and software development.
         </p>
 
+        <p className="github-sync-status" role="status">
+          {repositorySyncState === "loading" &&
+            "CONNECTING TO GITHUB..."}
+          {repositorySyncState === "synced" &&
+            "LIVE FROM GITHUB · AUTOMATICALLY REFRESHED"}
+          {repositorySyncState === "error" &&
+            "GITHUB SYNC UNAVAILABLE · SHOWING THE LAST AVAILABLE PROJECT LIST"}
+        </p>
+
         <div className="projects-grid">
           {projects.map((project, index) => (
             <article
@@ -409,6 +494,7 @@ export default function Home() {
                 <span className="project-number">
                   PROJECT / {project.number}
                 </span>
+
                 <span className="project-status">
                   <i /> {project.status}
                 </span>
@@ -418,11 +504,16 @@ export default function Home() {
                 <span className="project-symbol">{project.symbol}</span>
                 <span className="project-visual-ring ring-one" />
                 <span className="project-visual-ring ring-two" />
-                <span className="project-category">{project.category}</span>
+                <span className="project-category">
+                  {project.category}
+                </span>
               </div>
 
               <h3>{project.title}</h3>
-              <p className="project-description">{project.description}</p>
+
+              <p className="project-description">
+                {project.description}
+              </p>
 
               <div className="project-tech">
                 {project.tech.map((technology) => (
@@ -443,6 +534,7 @@ export default function Home() {
         </div>
       </section>
 
+      {/* JOURNEY */}
       <section id="journey" className="section-block journey-section">
         <div className="section-heading reveal">
           <span className="section-index">04 / THE JOURNEY</span>
@@ -456,6 +548,7 @@ export default function Home() {
               <br />
               builds the <span className="text-gradient">next.</span>
             </h2>
+
             <p>
               A growing foundation shaped by education, experimentation and
               hands-on learning.
@@ -490,11 +583,13 @@ export default function Home() {
         </div>
       </section>
 
+      {/* CONTACT */}
       <section id="contact" className="contact-section">
         <div className="contact-orb" />
 
         <div className="contact-content reveal">
           <span className="section-index">05 / OPEN CHANNEL</span>
+
           <p className="contact-overline">
             HAVE A PROJECT OR OPPORTUNITY?
           </p>
@@ -510,66 +605,69 @@ export default function Home() {
             I&apos;d be glad to connect and hear what you&apos;re working on.
           </p>
 
-          
-<div className="contact-methods">
-  <a
-    className="contact-email"
-    href="https://mail.google.com/mail/?view=cm&fs=1&to=alikhan206581@gmail.com"
-    target="_blank"
-    rel="noopener noreferrer"
-  >
-    <span className="contact-method-icon">✉</span>
-    <span>
-      <small>EMAIL ME</small>
-      ALIKHAN206581@GMAIL.COM
-    </span>
-    <span className="contact-arrow">↗</span>
-  </a>
+          {/* EMAIL AND PHONE */}
+          <div className="contact-methods">
+            <a
+              className="contact-email"
+              href="https://mail.google.com/mail/?view=cm&fs=1&to=alikhan206581@gmail.com"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <span className="contact-method-icon">✉</span>
 
-  <a className="contact-email" href="tel:+923362065801">
-    <span className="contact-method-icon">☎</span>
-    <span>
-      <small>CALL ME</small>
-      +92 336 2065801
-    </span>
-    <span className="contact-arrow">↗</span>
-  </a>
-</div>
+              <span>
+                <small>EMAIL ME</small>
+                ALIKHAN206581@GMAIL.COM
+              </span>
 
+              <span className="contact-arrow">↗</span>
+            </a>
 
-          
-<div className="social-links">
-  <a
-    href="https://github.com/alikhan206581"
-    target="_blank"
-    rel="noopener noreferrer"
-  >
-    <span className="social-icon">⌘</span>
-    GITHUB
-    <span className="social-arrow">↗</span>
-  </a>
+            <a className="contact-email" href="tel:+923362065801">
+              <span className="contact-method-icon">☎</span>
 
-  <a
-    href="https://www.linkedin.com/in/muhammad-ali-imran-582136308/"
-    target="_blank"
-    rel="noopener noreferrer"
-  >
-    <span className="linkedin-icon">in</span>
-    LINKEDIN
-    <span className="social-arrow">↗</span>
-  </a>
+              <span>
+                <small>CALL ME</small>
+                +92 336 2065801
+              </span>
 
-  <a
-    href="/Ali-Imran-CV.pdf"
-    download="Muhammad-Ali-Imran-CV.pdf"
-  >
-    <span className="social-icon">↓</span>
-    DOWNLOAD CV
-  </a>
-</div>
+              <span className="contact-arrow">↗</span>
+            </a>
+          </div>
 
+          {/* SOCIAL LINKS */}
+          <div className="social-links">
+            <a
+              href="https://github.com/alikhan206581"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <span className="social-icon">⌘</span>
+              GITHUB
+              <span className="social-arrow">↗</span>
+            </a>
+
+            <a
+              href="https://www.linkedin.com/in/muhammad-ali-imran-582136308/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <span className="linkedin-icon">in</span>
+              LINKEDIN
+              <span className="social-arrow">↗</span>
+            </a>
+
+            <a
+              href="/Ali-Imran-CV.pdf"
+              download="Muhammad-Ali-Imran-CV.pdf"
+            >
+              <span className="social-icon">↓</span>
+              DOWNLOAD CV
+            </a>
+          </div>
         </div>
 
+        {/* FOOTER */}
         <div className="contact-footer">
           <span>NEURAL ECLIPSE / PERSONAL PORTFOLIO</span>
           <span>© 2026 MUHAMMAD ALI IMRAN</span>
